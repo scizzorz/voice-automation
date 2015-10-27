@@ -5,7 +5,7 @@ class Voice(object):
     self.routes = []
 
   def process(self, complete_phrase):
-    phrases = complete_phrase.split('and')
+    phrases = complete_phrase.lower().split('and')
     for phrase in phrases:
       for route in self.routes:
         route.process(phrase)

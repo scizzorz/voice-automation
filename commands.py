@@ -87,7 +87,7 @@ def turn_lights(state, lights=[1, 2, 3]):
   elif state == 'up':
     bridge.set_light(lights, {'bri': 255})
 
-@handler.command('make the lights ([A-z]+)')
+@handler.command('make the lights ([a-z]+)')
 def make_lights(color, lights=[1, 2, 3]):
   global CONTEXT
   CONTEXT = lights
@@ -122,7 +122,7 @@ def dim_lights():
 def turn_all_lights(state):
   turn_lights(state, lights=[1, 2, 3, 4])
 
-@handler.command('make all the lights ([A-z]+)')
+@handler.command('make all the lights ([a-z]+)')
 def make_all_lights(color):
   make_lights(color, lights=[1, 2, 3, 4])
 
@@ -146,7 +146,7 @@ def turn_light(state, index):
   index = int(index)
   turn_lights(state, lights=index)
 
-@handler.command('make (?:light|like) (\w+|\d|\-) ([A-z]+)')
+@handler.command('make (?:light|like) (\w+|\d|\-) ([a-z]+)')
 def make_light(index, color):
   if index in NUMBERS:
     index = NUMBERS[index]
