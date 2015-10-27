@@ -71,9 +71,13 @@ bridge.connect()
 # command processing... thing...
 handler = voice.Voice()
 
+CONTEXT = None
+
 @handler.command('turn (up|down|on|off) the lights')
 @handler.command('turn the lights (up|down|on|off)')
 def turn_lights(state, lights=[1, 2, 3]):
+  global CONTEXT
+  CONTEXT = lights
   if state == 'on':
     bridge.set_light(lights, {'on': True, 'bri': 255})
   elif state == 'off':
@@ -85,6 +89,8 @@ def turn_lights(state, lights=[1, 2, 3]):
 
 @handler.command('make the lights (\w+)')
 def make_lights(color, lights=[1, 2, 3]):
+  global CONTEXT
+  CONTEXT = lights
   if color == 'warm':
     bridge.set_light(lights, {'sat': 64, 'hue': 12700})
   else:
@@ -92,6 +98,8 @@ def make_lights(color, lights=[1, 2, 3]):
 
 @handler.command('set the lights (?:to|\-) (\w+|\d|\-)')
 def set_lights(level, lights=[1, 2, 3]):
+  global CONTEXT
+  CONTEXT = lights
   if level in NUMBERS:
     level = NUMBERS[level]
   bri = int(int(level) / 9 * 255)
@@ -144,6 +152,24 @@ def set_light(index, level):
 @handler.command('dim light (\w+|\d|\-)')
 def dim_light(index):
   set_light(index, 0)
+
+
+@handler.command('turn (?:them|it) (up|down|on|off)')
+def turn_context(state):
+  turn_lights(state, lights=CONTEXT)
+
+@handler.command('make (?:them|it) (\w+)')
+def make_context(color):
+  make_lights(color, lights=CONTEXT)
+
+@handler.command('set (?:them|it) (?:to|\-) (\w+|\d|\-)')
+def set_context(level):
+  set_lights(level, lights=CONTEXT)
+
+@handler.command('dim (?:them|it)')
+def dim_context():
+  set_context(0)
+
 
 @handler.command('lock')
 def lock():
