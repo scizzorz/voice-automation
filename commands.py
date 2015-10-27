@@ -211,9 +211,12 @@ def sleep():
 
 @handler.command('set the mood')
 def mood():
-  bridge.set_light(4, {'on': True, 'bri': 64, 'sat': 255, 'hue': 54000})
-  bridge.set_light(2, {'on': True, 'bri': 64, 'sat': 255, 'hue': 0})
-  bridge.set_light([1, 3], {'on': True, 'bri': 64, 'sat': 255, 'hue': 6000})
+  turn_all_lights('on')
+  set_context(3)
+  make_lights('red', lights=1)
+  make_lights('magenta', lights=2)
+  make_lights('orange', lights=3)
+  make_lights('pink', lights=4)
   monitors('off')
   set_volume(4)
   next_song()
