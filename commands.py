@@ -96,16 +96,15 @@ def make_all_lights(color):
   make_lights(color, lights=[1, 2, 3, 4])
 
 
-@handler.command('turn (up|down|on|off) light (\w+|\d|\-)')
-@handler.command('turn (up|down|on|off) like (\w+|\d|\-)')
+
+@handler.command('turn (up|down|on|off) (?:light|like) (\w+|\d|\-)')
 def turn_light(state, index):
   if index in NUMBERS:
     index = NUMBERS[index]
   index = int(index)
   turn_lights(state, lights=index)
 
-@handler.command('make light (\w+|\d|\-) (\w+)')
-@handler.command('make like (\w+|\d|\-) (\w+)')
+@handler.command('make (?:light|like) (\w+|\d|\-) (\w+)')
 def make_light(index, color):
   if index in NUMBERS:
     index = NUMBERS[index]
@@ -137,22 +136,15 @@ def mood():
   set_volume(4)
   next_song()
 
-@handler.command('stop the music')
-@handler.command('pause the music')
-@handler.command('turn off the music')
-@handler.command('play the music')
-@handler.command('start the music')
-@handler.command('turn on the music')
+@handler.command('(?:stop|pause|play|start|turn on|turn off) the music')
 def music():
   os.system('xdotool key XF86AudioPlay')
 
-@handler.command('skip song')
-@handler.command('next song')
+@handler.command('(?:skip|next) song')
 def next_song():
   os.system('xdotool key XF86AudioNext')
 
-@handler.command('previous song')
-@handler.command('last song')
+@handler.command('(?:previous|last) song')
 def prev_song():
   os.system('xdotool key XF86AudioPrev')
 
