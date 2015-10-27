@@ -143,6 +143,9 @@ def make_light(index, color):
   make_lights(color, lights=index)
 
 @handler.command('set (?:light|like) (\w+|\d|\-) (?:to|\-) (\w+|\d|\-)')
+@handler.command('satellite (\w+|\d|\-) (?:to|\-) (\w+|\d|\-)')
+@handler.command('set (?:light|like) (\d)2(\d)')
+@handler.command('satellite (\d)2(\d)')
 def set_light(index, level):
   if index in NUMBERS:
     index = NUMBERS[index]
