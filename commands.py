@@ -218,6 +218,13 @@ def mood():
   set_volume(4)
   next_song()
 
+@handler.command('this is halloween')
+def halloween():
+  turn_all_lights('on')
+  make_lights('orange', lights=[2, 3])
+  make_lights('purple', lights=1)
+  make_lights_hue(280, lights=4)
+
 @handler.command('(?:stop|pause|play|start|turn on|turn off) the music')
 def music():
   os.system('xdotool key XF86AudioPlay')
