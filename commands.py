@@ -2,8 +2,10 @@ import os
 import phue
 import voice
 
+# PulseAudio volume sink
 SINK = 'alsa_output.pci-0000_00_1b.0.analog-stereo'
 
+# hue strings -> values
 HUES = {
 	'red': 0,
 	'orange': 30,
@@ -20,6 +22,7 @@ HUES = {
 	'pink': 330,
 }
 
+# number strings -> values
 NUMBERS = {
   'one': 1,
   'won': 1,
@@ -61,9 +64,11 @@ NUMBERS = {
   'twenty five': 25,
 }
 
+# Hue API
 bridge = phue.Bridge('192.168.0.101')
 bridge.connect()
 
+# command processing... thing...
 handler = voice.Voice()
 
 @handler.command('turn (up|down|on|off) the lights')
