@@ -4,9 +4,11 @@ class Voice(object):
   def __init__(self):
     self.routes = []
 
-  def process(self, phrase):
-    for route in self.routes:
-      route.process(phrase)
+  def process(self, complete_phrase):
+    phrases = complete_phrase.split('and')
+    for phrase in phrases:
+      for route in self.routes:
+        route.process(phrase)
 
   def command(self, path):
     def wrapper(func):
