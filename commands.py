@@ -90,6 +90,17 @@ def make_lights(color, lights=[1, 2, 3]):
   else:
     bridge.set_light(lights, {'sat': 255, 'hue': int(HUES[color] * 65535 / 360)})
 
+@handler.command('set the lights (?:to|\-) (\w+|\d|\-)')
+def set_lights(level, lights=[1, 2, 3]):
+  if level in NUMBERS:
+    level = NUMBERS[level]
+  bri = int(int(level) / 9 * 255)
+  bridge.set_light(lights, {'bri': bri})
+
+@handler.command('dim the lights')
+def dim_lights():
+  set_lights(0)
+
 
 @handler.command('turn (up|down|on|off) all the lights')
 @handler.command('turn all the lights (up|down|on|off)')
@@ -100,6 +111,13 @@ def turn_all_lights(state):
 def make_all_lights(color):
   make_lights(color, lights=[1, 2, 3, 4])
 
+@handler.command('set all the lights (?:to|\-) (\w+|\d|\-)')
+def set_all_lights(level):
+  set_lights(level, lights=[1, 2, 3, 4])
+
+@handler.command('dim all the lights')
+def dim_all_lights():
+  set_all_lights(0)
 
 
 @handler.command('turn (up|down|on|off) (?:light|like) (\w+|\d|\-)')
@@ -115,6 +133,17 @@ def make_light(index, color):
     index = NUMBERS[index]
   index = int(index)
   make_lights(color, lights=index)
+
+@handler.command('set (?:light|like) (\w+|\d|\-) (?:to|\-) (\w+|\d|\-)')
+def set_light(index, level):
+  if index in NUMBERS:
+    index = NUMBERS[index]
+  index = int(index)
+  set_lights(level, lights=index)
+
+@handler.command('dim light (\w+|\d|\-)')
+def dim_light(index):
+  set_light(index, 0)
 
 @handler.command('lock')
 def lock():
