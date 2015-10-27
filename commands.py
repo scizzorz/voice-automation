@@ -87,14 +87,21 @@ def turn_lights(state, lights=[1, 2, 3]):
   elif state == 'up':
     bridge.set_light(lights, {'bri': 255})
 
-@handler.command('make the lights (\w+)')
+@handler.command('make the lights ([A-z]+)')
 def make_lights(color, lights=[1, 2, 3]):
   global CONTEXT
   CONTEXT = lights
   if color == 'warm':
     bridge.set_light(lights, {'sat': 64, 'hue': 12700})
   else:
-    bridge.set_light(lights, {'sat': 255, 'hue': int(HUES[color] * 65535 / 360)})
+    make_lights_hue(HUES[color], lights)
+
+@handler.command('make the lights (\d+)')
+def make_lights_hue(hue, lights=[1, 2, 3]):
+  global CONTEXT
+  CONTEXT = lights
+  hue = int(hue)
+  bridge.set_light(lights, {'sat': 255, 'hue': int(hue * 65535 / 360)})
 
 @handler.command('set the lights (?:to|\-) (\w+|\d|\-)')
 def set_lights(level, lights=[1, 2, 3]):
@@ -115,9 +122,13 @@ def dim_lights():
 def turn_all_lights(state):
   turn_lights(state, lights=[1, 2, 3, 4])
 
-@handler.command('make all the lights (\w+)')
+@handler.command('make all the lights ([A-z]+)')
 def make_all_lights(color):
   make_lights(color, lights=[1, 2, 3, 4])
+
+@handler.command('make all the lights (\d+)')
+def make_all_lights_hue(hue):
+  make_lights_hue(hue, lights=[1, 2, 3, 4])
 
 @handler.command('set all the lights (?:to|\-) (\w+|\d|\-)')
 def set_all_lights(level):
@@ -135,12 +146,20 @@ def turn_light(state, index):
   index = int(index)
   turn_lights(state, lights=index)
 
-@handler.command('make (?:light|like) (\w+|\d|\-) (\w+)')
+@handler.command('make (?:light|like) (\w+|\d|\-) ([A-z]+)')
 def make_light(index, color):
   if index in NUMBERS:
     index = NUMBERS[index]
   index = int(index)
   make_lights(color, lights=index)
+
+@handler.command('make (?:light|like) (\w+|\d|\-) (\d+)')
+@handler.command('make (?:light|like) (\d)(\d+)')
+def make_light_hue(index, hue):
+  if index in NUMBERS:
+    index = NUMBERS[index]
+  index = int(index)
+  make_lights_hue(hue, lights=index)
 
 @handler.command('set (?:light|like) (\w+|\d|\-) (?:to|\-) (\w+|\d|\-)')
 @handler.command('satellite (\w+|\d|\-) (?:to|\-) (\w+|\d|\-)')
